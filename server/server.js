@@ -34,21 +34,38 @@ app.get('/songs', async(req,res) =>{
 
 
 //retrieval of song upon user click for playing song
-app.get('/songs/file/:filename', async (req,res) =>
+app.get('/songs/file/:songID', async (req,res) =>
 {
-    //filename from url
-    const {filename} = req.params;
+    //songid from url
+    const {songID} = req.params;
 
     try{
+        //going to make query to get filename given id
+        const mp3connect = await getConnection();
+        const fileret = 'select filename from songInfo where id=?';
+        const [rows] = await mp3connect.query(fileret,[songID]);
+        
+        //error checking
+        if (rows.length===0)
+        {
+            return res.status(404).json({message:"Song not found"});
+            mp3connect.release();
+            return;
+        }
+
+        //getting filename to search in bucket to retrieve file 
+        const filename = rows.filename;
+        
         const filestream = await getFile(filename);
-        res.setHeader('Content Type','audio/mpeg');
-        fileStream.Body.pipe(res);
+        res.setHeader('Content-Type','audio/mpeg');
+        filestream.Body.pipe(res);
+        mp3connect.release();
 
     }
     catch(error)
     {
         console.error("Error fetching files",error)
-        res.status(500).send("Failed to retrieve file");
+        res.status(500).json({message:"Failed to retrieve file"}    );
     }
 
 });
@@ -69,7 +86,6 @@ app.post('/songs', upload.single('file'), async(req,res) =>
     try {
         const query = 'insert into songInfo (song_title, artist) values(?, ?)';
         
-        // For mysql, use the callback style query (no destructuring)
         connection.query(query, [song_title, artist], (error, results) => {
             if (error) {
                 console.error("Error in making entry in DB.", error);
