@@ -13,7 +13,7 @@ dotenv.config({path: 'awsinfo.env'});
 
 
 
-const bucketName = 'mp3uploaderbucket';
+const bucketName = process.env.AWS_BUCKET_NAME;
 
 const s3 = new S3Client({
     region:process.env.AWS_REGION,
