@@ -1,9 +1,16 @@
 //Handling simple get request to import in App.js
 import axios from 'axios';
 import React,{useEffect, useState} from 'react';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import rootShouldForwardProp from '@mui/material/styles/rootShouldForwardProp';
 
-
-const SongsList =() =>
+function useFetchSongs()
 {
     const [songs, setSongs] = useState([]);
 
@@ -18,37 +25,64 @@ const SongsList =() =>
         {
             console.error("Error fetching songs",error);
         });
-    })
+    },[]);
+
+    return songs;
+}
+
+const SongsList =() =>
+{
+    const songs = useFetchSongs();
     return ( 
-        <div className='table'> 
-        <table>
-                <tr>
-                    <th>Title</th>
-                    <th>Artist</th>
-                    <th>Filename</th>
-                </tr>
-                {songs.map((song,index) =>
-                {
-                    return(
-                        <tr key={index}>
-                            <td>{song.song_title}</td>
-                            <td>{song.artist}</td>
-                        </tr>
-                    )
-                })}
-                
-            
-            </table> 
+        <TableContainer component={songsList}>
+            <Table sx={} aria-label='song table'>
+                <TableHead>
+                    <TableRow>
+                        <TableCell align='right'>Title</TableCell>
+                        <TableCell align='right'>Artist</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {songs.map((song) =>
+                    {
+                        <TableRow 
+                        key={song.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+
+                            
+                        </TableRow>
+
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    
+
+
+    
+    
+    
+        //     <div className='table'> 
+    //     <table>
+    //             <tr>
+    //                 <th>Title</th>
+    //                 <th>Artist</th>
+    //                 <th>File</th>
+    //             </tr>
+    //             {songs.map((song) =>
+    //             {
+    //                 return(
+    //                     <tr key={song.id}>
+    //                         <td>{song.song_title}</td>
+    //                         <td>{song.artist} </td>
+    //                     </tr>
+    //                 )
+    //             })}
+    //         </table> 
               
-            {/* <table>
-                {songs.map((song, index) => (
-                    <li key={index}>
-                        {song.song_title} by {song.artist} 
-                    </li>
-                ))}
-            </table> */}
         
-    </div>)
+    // </div>
+)
 };
 
 
