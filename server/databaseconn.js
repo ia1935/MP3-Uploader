@@ -8,7 +8,6 @@ const connectionPool = mysql.createPool({
     database:'mp3database'
 });
 
-
 const getConnection =()  =>
 {
     return new Promise((resolve, reject) => {

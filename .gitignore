@@ -2,3 +2,4 @@ node_modules
 awsinfo.env
 server/awsinfo.env
 server/awsinfo.env
+server/databaseconn.js
