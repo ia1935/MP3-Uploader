@@ -8,6 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+//importing other files for player
+import PlayButton from './PlayButton'
+
 function useFetchSongs() {
     const [songs, setSongs] = useState([]);
 
@@ -32,8 +35,9 @@ const SongsList = () => {
             <Table sx={{ minWidth: 650 }} aria-label="song table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align='right'>ID</TableCell>
+                        <TableCell align='left'>Play</TableCell>
                         <TableCell align="right">Title</TableCell>
+                        <TableCell align='right'>Artist</TableCell>
                         <TableCell align="right">Filename</TableCell>
                     </TableRow>
                 </TableHead>
@@ -41,12 +45,12 @@ const SongsList = () => {
                     {songs.map((song) => (
                         <TableRow
                             key={song.title}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            sx={{ '&:last-child td, &:last-child th': { border: 1} }}
                         >
                             <TableCell component="th" scope="song">
-                                {song.id}
+                                <PlayButton songId={song.id} filename={song.filename}/> {/*Playbutton integration*/}
                             </TableCell>
-                            <TableCell align="left">{song.song_title}</TableCell>
+                            <TableCell align="right">{song.song_title}</TableCell>
                             <TableCell align="right">{song.artist}</TableCell>
                             <TableCell align="right">{song.filename}</TableCell>
                         </TableRow>
