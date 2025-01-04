@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 //importing other files for player
-import PlayButton from './PlayButton'
+import DownloadButton from './DownloadButton'
 
 function useFetchSongs() {
     const [songs, setSongs] = useState([]);
@@ -48,7 +48,7 @@ const SongsList = () => {
                             sx={{ '&:last-child td, &:last-child th': { border: 1} }}
                         >
                             <TableCell component="th" scope="song">
-                                <PlayButton songId={song.id} filename={song.filename}/> {/*Playbutton integration*/}
+                                <DownloadButton songId={song.id} filename={song.filename}/> {/*Playbutton integration*/}
                             </TableCell>
                             <TableCell align="right">{song.song_title}</TableCell>
                             <TableCell align="right">{song.artist}</TableCell>
