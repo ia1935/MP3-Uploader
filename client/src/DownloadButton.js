@@ -38,9 +38,9 @@ const DownloadButton=({songId,filename}) =>
     };
 
     return(
-        <a onClick={handlePress}>
+        <button onClick={handlePress}>
             Download Song
-        </a>
+        </button>
     );
 };
 

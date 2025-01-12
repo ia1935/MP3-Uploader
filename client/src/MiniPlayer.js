@@ -1,10 +1,6 @@
 //MiniPlayer button bottom screen 
-
-
 import React,{useState} from "react";
 import { FaPause, FaPlay } from 'react-icons/fa';
-
-
 
 const MiniPlayer = ({currentSong, audio}) => {
     const [isPlaying, setisPlaying] = useState(true);

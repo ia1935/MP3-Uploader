@@ -1,6 +1,6 @@
 import react from 'react'
 import axios from 'axios';
-
+import { FaPlay } from 'react-icons/fa';
 const PlayButton =({songId}) =>
 {
     const playSong = async() =>
@@ -34,8 +34,8 @@ const PlayButton =({songId}) =>
     return(
         <div>
 
-            <button onClick={playSong}>
-                Play Song
+            <button onClick={playSong} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                <FaPlay size={20} color="blue" />
             </button>         
         </div>
     );
