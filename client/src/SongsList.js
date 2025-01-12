@@ -11,7 +11,7 @@ import Paper from '@mui/material/Paper';
 //importing other files for player
 import DownloadButton from './DownloadButton'
 
-import PlayButton from './PlayButton';
+import PlayButton from './Playbutton';
 
 function useFetchSongs() {
     const [songs, setSongs] = useState([]);
