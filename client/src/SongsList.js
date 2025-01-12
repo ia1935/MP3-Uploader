@@ -11,6 +11,8 @@ import Paper from '@mui/material/Paper';
 //importing other files for player
 import DownloadButton from './DownloadButton'
 
+import PlayButton from './PlayButton';
+
 function useFetchSongs() {
     const [songs, setSongs] = useState([]);
 
@@ -48,11 +50,14 @@ const SongsList = () => {
                             sx={{ '&:last-child td, &:last-child th': { border: 1} }}
                         >
                             <TableCell component="th" scope="song">
-                                <DownloadButton songId={song.id} filename={song.filename}/> {/*Playbutton integration*/}
+                                <PlayButton songId={song.id}></PlayButton>  {/*Integration of audio player*/}
                             </TableCell>
                             <TableCell align="right">{song.song_title}</TableCell>
                             <TableCell align="right">{song.artist}</TableCell>
-                            <TableCell align="right">{song.filename}</TableCell>
+                            <TableCell component="th" scope="song">
+                                <DownloadButton songId={song.id} filename={song.filename}/> {/*Playbutton integration*/}
+                            </TableCell>
+                            
                         </TableRow>
                     ))}
                 </TableBody>
