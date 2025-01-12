@@ -35,7 +35,7 @@ const PlayButton =({songId}) =>
         <div>
 
             <button onClick={playSong} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <FaPlay size={20} color="blue" />
+                <FaPlay size={20} color="grey" />
             </button>         
         </div>
     );

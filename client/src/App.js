@@ -11,7 +11,6 @@ function App(){
             <SongsList />
             </div>
             <div>
-                <MiniPlayer />  
             </div>
         </div>
         
