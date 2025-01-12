@@ -2,7 +2,7 @@
 
 
 import React,{useState} from "react";
-import { FaPause, FaPlay } from 'react-icons/fa';\
+import { FaPause, FaPlay } from 'react-icons/fa';
 
 
 
