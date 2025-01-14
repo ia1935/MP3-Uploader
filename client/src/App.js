@@ -11,7 +11,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
-
 import DownloadButton from './DownloadButton'
 import PlayButton from './PlayButton';
 import MiniPlayer from './MiniPlayer';
@@ -37,10 +36,17 @@ function App(){
     const songs = useFetchSongs();
     const [currentSong, setCurrentSong] = useState(null);
     
-    const playSong = (song) => {
-        setCurrentSong(song);
+    const miniPlayerContainer = {
+        position: 'fixed',
+        bottom: '10px', // Distance from the bottom
+        left: '50%', // Center horizontally
+        transform: 'translateX(-50%)', // Offset by half of its width
+        zIndex: 1000, // Ensure it appears above other content
+        backgroundColor: 'white', // Background for visibility
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Optional styling
+        borderRadius: '10px', // Rounded corners
+        padding: '10px 20px', // Add some padding
     };
-
 
     return(
         <div>
@@ -61,12 +67,12 @@ function App(){
                             sx={{ '&:last-child td, &:last-child th': { border: 1} }}
                         >
                             <TableCell component="th" scope="song">
-                                <PlayButton songId={song.id}></PlayButton>  {/*Integration of audio player*/}
+                            <PlayButton song={song} onPlay={setCurrentSong} />  {/*Integration of audio player*/}
                             </TableCell>
                             <TableCell align="right">{song.song_title}</TableCell>
                             <TableCell align="right">{song.artist}</TableCell>
                             <TableCell align='right' component="th" scope="song">
-                                <DownloadButton songId={song.id} filename={song.filename}/> {/*Playbutton integration*/}
+                                <DownloadButton songId={song.id} filename={song.filename} /> {/*Playbutton integration*/}
                             </TableCell>
                             
                         </TableRow>
@@ -74,9 +80,12 @@ function App(){
                 </TableBody>
             </Table>
         </TableContainer>
-                
-            {currentSong && <MiniPlayer song={currentSong} />}
+        <div style={miniPlayerContainer}>        
+            <MiniPlayer song={currentSong} />
         </div>
+        </div>
+        
+        
     );
 }
 

@@ -1,41 +1,69 @@
-//MiniPlayer button bottom screen 
-import React,{useState} from "react";
-import { FaPause, FaPlay } from 'react-icons/fa';
+import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
-const MiniPlayer = ({currentSong, audio}) => {
-    const [isPlaying, setisPlaying] = useState(true);
+function MiniPlayer({ song }) {
+    const audioRef = useRef(null);
+    const [audioURL, setAudioURL] = useState(null);
 
-    const togglePlayPause = () =>
-    {
-        if (isPlaying){
-            audio.pause();
+    useEffect(() => {
+        if (song) {
+            fetchAndPlaySong(song.id);
         }
-        else{
+
+        // Cleanup audio URL when song changes or component unmounts
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+            }
+            if (audioURL) {
+                URL.revokeObjectURL(audioURL);
+                setAudioURL(null);
+            }
+        };
+    }, [song]);
+
+    const fetchAndPlaySong = async (songId) => {
+        try {
+            const response = await axios.get(`http://localhost:3000/songs/file/${songId}`, {
+                responseType: 'blob',
+            });
+
+            const blob = response.data;
+            const url = URL.createObjectURL(blob);
+            setAudioURL(url);
+
+            if (audioRef.current) {
+                audioRef.current.pause();
+            }
+
+            const audio = new Audio(url);
+            audioRef.current = audio;
             audio.play();
-        }
-        setisPlaying(!isPlaying);
 
+            // Clean up URL when audio finishes playing
+            audio.onended = () => {
+                URL.revokeObjectURL(url);
+                setAudioURL(null);
+            };
+        } catch (error) {
+            console.error('Error playing song', error);
+        }
     };
 
+    if (!song) {
+        return <div>Select a song to play</div>;
+    }
+
     return (
-        <div style={{position:'fixed',
-            bottom:0,
-            display:'flex',
-            alignItems:'center',
-            padding: '10px'
-        }}>
+        <div className="mini-player">
             <div>
-            <h4>{currentSong.songTitle}</h4>
+                <h3>{song.song_title}</h3>
+                <p>{song.artist}</p>
             </div>
-            <div>
-            <button onClick={togglePlayPause} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'white' }}>
-                {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
-            </button>
-      </div>
-            
-    </div>
-        
+            <button onClick={() => audioRef.current?.pause()}>Pause</button>
+            <button onClick={() => audioRef.current?.play()}>Play</button>
+        </div>
     );
 }
 
-export default MiniPlayer
+export default MiniPlayer;
