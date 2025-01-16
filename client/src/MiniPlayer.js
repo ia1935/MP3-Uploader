@@ -60,8 +60,10 @@ function MiniPlayer({ song }) {
                 <h3>{song.song_title}</h3>
                 <p>{song.artist}</p>
             </div>
+            <div>
             <button onClick={() => audioRef.current?.pause()}>Pause</button>
             <button onClick={() => audioRef.current?.play()}>Play</button>
+            </div>
         </div>
     );
 }
