@@ -15,13 +15,48 @@ export default function AddSongForm()
     });
 
     const [selectedFile, setSelectedFile] = useState(null);
+
+    const [userMessage, setUserMessage] = useState("");
+
+    const handleSubmit = async (event) =>{
+		event.preventDefault();
+		
+		if(!selectedFile || !formData.title || !formData.artist)
+		{
+		    setUserMessage("Please enter the Title, Artist and enter a valid MP3 File.");
+		    return;
+		}	
+
+		const data = new formData();
+		data.append("title", formData.title);
+		data.append("artist" ,formData.artist);
+		data.append("mp3file", formData.selectedFile);
+
+		//performing a POST request:
+
+		try{
+			const response = await axios.post("http://localhost:3000/songs", data, {
+				headers:{ 
+				"Content-Type":"multipart/form-data",
+				},
+			});
+
+			if (response.status ===200){
+				setUserMessage("File Uploaded Successfully");
+				setFormData({title:"", artist:""}); //resetting current data
+				setSelectedFile(null);
+
+			}
+
+
+		}
+		catch(error){
+			setMessage("Failed to Upload File");
+		}
+	
+    }
     
-    return (
-        <form>
-            <input name='title' />
-            
-        </form>
-    );
+    return ();
 }
 
 
