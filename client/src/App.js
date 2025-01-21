@@ -110,7 +110,7 @@ function App(){
         {formState && (
         <div className="overlay" onClick={toggleForm}>
         <div className="form-container" onClick={(e) => e.stopPropagation()}>
-        <AddSongForm setSongs={setSongs} fetchSongs={fetchSongs} />
+            <AddSongForm setSongs={setSongs} fetchSongs={fetchSongs} />
         </div>
         </div>
         )}

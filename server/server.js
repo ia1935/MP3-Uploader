@@ -141,8 +141,13 @@ app.put('/songs/:id',upload.single('file'), async (req,res) =>
 
 
 
-        const fileretrieval = 'select filename where id=?';
-        const [result] = await connection.query(fileretrieval,[id]);
+        const fileretrieval = 'select filename from songInfo where id=?';
+        // console.log('Request params:', req.params);
+        // console.log('Request body:', req.body);
+
+        // console.log('Querying database for song...');
+        const [result] = await connection.query(fileretrieval, [id]);
+        // console.log('Query result:', result);
 
         if (result.length===0)
         {
@@ -151,34 +156,45 @@ app.put('/songs/:id',upload.single('file'), async (req,res) =>
             return;
         }
 
-        const prevFile = result[0].filename;
+        const prevFile = result.filename;
+        console.log("This is the info", prevFile)
 
 
         let updatedFile = prevFile;
 
-        if (filename)
-        {
-            updatedFile = `${id}-${filename}`
-        
+        if (req.file) {
+            updatedFile = `${id}-${req.file.originalname}`;
 
-            await uploadFile(updatedFile,filename.buffer);
+            // Upload new file if it's provided
+            console.log('Uploading file:', updatedFile);
+            await uploadFile(updatedFile, req.file.buffer);
+            console.log('File uploaded successfully.');
 
-            if (prevFile !==updatedFile )
-            {
+            // Delete previous file from storage if the filename has changed
+            if (prevFile !== updatedFile) {
+                console.log('Deleting old file:', prevFile);
                 await deleteFile(prevFile);
             }
         }
 
-        const updateQuery = 'update songInfo set song_title=?, artist=?, filename=? where id=?';
-        await connection.query(updateQuery,[song_title,artist,updatedFile,id]);
+        // Only update song_title and artist if they are provided
+        const updateQuery = `
+        UPDATE songInfo 
+        SET 
+            song_title = COALESCE(?, song_title), 
+            artist = COALESCE(?, artist), 
+            filename = ?
+        WHERE id = ?`;
+        await connection.query(updateQuery, [song_title || null, artist || null, updatedFile, id]);
         
         connection.release();
+        res.status(200).send('Song updated successfully');
 
     }
     catch(error)
     {
         console.error(`Error in making update to DB at ID ${id}.`,error);
-        res.status(500);
+        res.status(500).send('error updating song');
     }
 });
 
@@ -192,17 +208,17 @@ app.delete('/songs/:id',async (req,res) =>
         const connection = await getConnection();
 
         //need to grab filename for s3
-        const filegrab = 'select filename where id=?';
+        const filegrab = 'select filename from songInfo where id=?';
         const [fileres]= await connection.query(filegrab,[id]);
 
-        if(results.length===0)
+        if(fileres.length===0)
         {
             res.status(404).send("Song not found.");
             connection.release();
             return;
         }
 
-        const filename = fileres[0].filename;
+        const filename = fileres.filename;
 
         //delete file from bucket
         await deleteFile(filename);
@@ -215,6 +231,7 @@ app.delete('/songs/:id',async (req,res) =>
         connection.release();
 
         console.log("song deleted successfully")
+        return; 
     }
     catch(error)
     {
