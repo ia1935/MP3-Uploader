@@ -18,3 +18,50 @@ code {
   justify-content: center;
   align-items: center;
 } */
+.formbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 350px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+}
+  
+  
+
+.input {
+  width: 100%;
+  padding: 10px 10px 20px 10px;
+  outline: 0;
+  border: 1px solid #355891;
+  border-radius: 5px;
+  
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500; /* Ensures it appears above everything else */
+}
+
+.form-container {
+  position: relative;
+  background-color: #1a1a1a; /* Same as your current formbox background */
+  color: #fff;
+  padding: 20px;
+  border-radius: 20px; /* Matches your current formbox style */
+  max-width: 400px;
+  width: 90%; /* Makes it responsive */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adds a shadow for better visibility */
+}

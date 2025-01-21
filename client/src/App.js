@@ -16,27 +16,45 @@ import PlayButton from './PlayButton';
 import MiniPlayer from './MiniPlayer';
 
 
+
+//Add button 
+import { CiSquarePlus } from "react-icons/ci";
+import AddSongForm from './AddSong';
+
+
 function useFetchSongs() {
     const [songs, setSongs] = useState([]);
 
-    useEffect(() => {
-        axios.get('http://localhost:3000/songs')
-            .then((response) => {
-                setSongs(response.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching songs', error);
-            });
-    }, []);
+    useEffect(() =>{
+        fetchSongs();
+    },[]);
+    const fetchSongs= async() => {
+        try{
+            axios.get('http://localhost:3000/songs')
+                .then((response) => {
+                    setSongs(response.data);
+                });
+                
+                
+        }catch(error) {
+            console.error('Error fetching songs', error);
+        }
+    };
 
-    return songs;
+    return {songs, setSongs, fetchSongs};
 }
 
 function App(){
-    const songs = useFetchSongs();
+    const {songs, setSongs, fetchSongs} = useFetchSongs();
     const [currentSong, setCurrentSong] = useState(null);
 
     const [formState, setFormState] = useState(false);
+
+    const toggleForm = () =>
+    {
+        setFormState(!formState);
+    };
+
 
     return(
         <div>
@@ -83,14 +101,22 @@ function App(){
     }}>        
             <MiniPlayer song={currentSong} />
         </div>
+       
         <div>
-            {/* Placing adding button which will put form in center of screen to put a new song. */}
-
-            {/* only need to put the small icon here, when clicked calling the form. */}
-
-        </div>
-        </div>
+            <button style={{position:'fixed', bottom:'20px', right:'20px'}} onClick={toggleForm}>
+                <CiSquarePlus size={30} color='black' />
+            </button>
         
+        {formState && (
+        <div className="overlay" onClick={toggleForm}>
+        <div className="form-container" onClick={(e) => e.stopPropagation()}>
+        <AddSongForm setSongs={setSongs} fetchSongs={fetchSongs} />
+        </div>
+        </div>
+        )}
+
+        </div>
+        </div>
         
     );
 }
