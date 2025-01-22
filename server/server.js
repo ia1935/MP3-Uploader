@@ -230,7 +230,7 @@ app.delete('/songs/:id',async (req,res) =>
 
         connection.release();
 
-        console.log("song deleted successfully")
+        res.status(200).json({ message: "Song uploaded successfully" });
         return; 
     }
     catch(error)

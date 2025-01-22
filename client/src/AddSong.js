@@ -1,4 +1,4 @@
-import react , {useState} from 'react';
+import {useState} from 'react';
 import axios from 'axios';
 
 
@@ -87,6 +87,9 @@ export default function AddSongForm({fetchSongs})
     return (<div className='formbox'>
 		<form>
 			<div>
+				{userMessage}
+			</div>
+			<div>
 				<input className='input' placeholder='Title' type='text' id='song_title'  
 				name='title'
 				value={formData.title}	onChange={handleTextChange} required />
@@ -101,10 +104,10 @@ export default function AddSongForm({fetchSongs})
 				<input type='file' id='mp3File' accept='.mp3' name='file' 
 				onChange={handleFileChange} required />
 			</div>
-			{/* Submit and cancel buttons */}
 			<div>
 				<button type='submit' onClick={handleSubmit}>Submit </button>
 			</div>
+			
 		</form>
 	</div>);
 }
