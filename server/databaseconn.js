@@ -1,11 +1,13 @@
 import mysql from 'mysql';
 import {promisify} from 'util';
+
+
 const connectionPool = mysql.createPool({
     connectionLimit:5,
-    host:'localhost',
-    user:'root',
-    password: 'password',
-    database:'mp3database'
+    host:process.env.MYSQL_HOST,
+    user:process.env.MYSQL_USER,
+    password: process.env.MYSQL_ROOT_PASSWORD,
+    database:process.env.MYSQL_DATABASE,
 });
 
 const getConnection =()  =>

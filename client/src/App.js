@@ -139,7 +139,7 @@ function App(){
             document.removeEventListener('click', handleClickOutside);
         };
     }, [contextMenu.toggled]);
-
+    
 
     return(
         <div>
